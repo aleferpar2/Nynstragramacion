@@ -8,7 +8,7 @@ export default async function Home() {
   // TODO: lanzar las dos consultas a la vez
   const posts = await getPosts();    
   const likes = await getLikes(user_id);
-
+console.log();
 
   return <PostList user_id={user_id} posts={posts} likes={likes} />
 }
