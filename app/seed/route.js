@@ -1,6 +1,8 @@
 import { sql } from "@vercel/postgres"
 
-export default async () => {
+export async function GET () {
+
+    await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
 
     await sql`DROP TABLE IF EXISTS sa_users, sa_posts, sa_likes`;
 
@@ -26,5 +28,5 @@ export default async () => {
         PRIMARY KEY(user_id, post_id)
     )`;
 
-    return <p>Database seed the guay</p>
+    return Response.json({ message: 'Database seeded successfully' });
 }
