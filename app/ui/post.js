@@ -45,9 +45,10 @@ export default ({
             <p><span className="font-bold">{post.username}</span> {post.content}</p>
            </div>
            <div><Link href={`/post/${post.post_id}`}>Ver los 37 comentarios</Link></div>
-           <div>
-             <input className="w-full outline-0 dark:bg-neutral-950" type="text" placeholder="Add comment" />
-           </div>
+           <form action={addComment}>
+            <input type="hidden" name="post_id" value={post.post_id} />
+             <input name="content" className="w-full outline-0 dark:bg-neutral-950" type="text" placeholder="Add comment" />
+           </form>
         </div>
     )
 }
