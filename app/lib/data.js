@@ -2,9 +2,8 @@ import { sql } from "@vercel/postgres";
 
 
 // TODO: 0 likes
-export async function getPosts(){
-    return (await sql
-`
+export async function getPosts() {
+    return (await sql`
 SELECT 
     sa_posts.post_id, 
     content, 
@@ -12,7 +11,7 @@ SELECT
     sa_posts.user_id, 
     username, 
     picture,
-    count(sa_likes.user_id) as num_likes 
+    COALESCE(count(sa_likes.user_id), 0) as num_likes 
 FROM 
     sa_posts 
 JOIN
@@ -26,12 +25,10 @@ GROUP BY
     sa_posts.user_id, 
     username,
     picture
-
 `).rows;
 }
-
 // TODO: 0 likes
-export async function getPost(post_id){
+export async function getPost(post_id) {
     return (await sql`
 SELECT 
     sa_posts.post_id, 
@@ -40,7 +37,7 @@ SELECT
     sa_posts.user_id, 
     username, 
     picture,
-    count(sa_likes.user_id) as num_likes 
+    COALESCE(count(sa_likes.user_id), 0) as num_likes 
 FROM 
     sa_posts 
 JOIN 
@@ -56,7 +53,7 @@ GROUP BY
     sa_posts.user_id, 
     username,
     picture 
-   `).rows;
+`).rows;
 }
 
 export async function getComments(post_id) {
