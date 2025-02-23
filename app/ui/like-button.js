@@ -10,13 +10,20 @@ export default ({post_id, user_id, isLikedInitial}) => {
     let [isLiked, setIsLiked] = useState(isLikedInitial);
 
     // TODO: quitar de aqui
-    function toogleLike() {
-        if (isLiked) {
-            removeLike(post_id, user_id);
-            setIsLiked(false);
-        } else {
-            insertLike(post_id, user_id);
-            setIsLiked(true);
+    async function toogleLike() {
+        try {
+            if (isLiked) {
+                await removeLike(post_id, user_id);
+                setIsLiked(false);
+            } else {
+                await insertLike(post_id, user_id);
+                setIsLiked(true);
+            }
+            // Revalidate the page to update the like count
+            window.location.reload();
+        } catch (error) {
+            console.error('Error toggling post like:', error);
+            alert('Error al actualizar el like del post');
         }
     }
 

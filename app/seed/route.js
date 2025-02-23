@@ -6,7 +6,7 @@ export async function GET() {
     await sql`DROP TABLE IF EXISTS sa_likes CASCADE`
     await sql`DROP TABLE IF EXISTS sa_comments CASCADE`
     await sql`DROP TABLE IF EXISTS sa_posts CASCADE`
-    //await sql`DROP TABLE IF EXISTS sa_users CASCADE`
+    await sql`DROP TABLE IF EXISTS sa_users CASCADE`
     
     
     await sql`CREATE TABLE IF NOT EXISTS sa_users(
@@ -17,35 +17,11 @@ export async function GET() {
         email text UNIQUE
     )`;
 
-    await sql`CREATE TABLE IF NOT EXISTS sa_comment_likes (
-        user_id UUID REFERENCES sa_users(user_id),
-        comment_id UUID REFERENCES sa_comments(comment_id),
-        PRIMARY KEY (user_id, comment_id)
-    )`;
-    
     await sql`CREATE TABLE IF NOT EXISTS sa_posts(
-    post_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    user_id UUID REFERENCES sa_users(user_id),
-    content TEXT,
-    url TEXT
-    )`;
-
-    await sql`CREATE TABLE IF NOT EXISTS sa_comment_likes (
+        post_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         user_id UUID REFERENCES sa_users(user_id),
-        comment_id UUID REFERENCES sa_comments(comment_id),
-        PRIMARY KEY (user_id, comment_id)
-    )`;
-
-    await sql`CREATE TABLE IF NOT EXISTS sa_likes (
-        user_id UUID REFERENCES sa_users(user_id),
-        post_id UUID REFERENCES sa_posts(post_id),
-        PRIMARY KEY (user_id, post_id)
-    )`;
-
-    await sql`CREATE TABLE IF NOT EXISTS sa_comment_likes (
-        user_id UUID REFERENCES sa_users(user_id),
-        comment_id UUID REFERENCES sa_comments(comment_id),
-        PRIMARY KEY (user_id, comment_id)
+        content TEXT,
+        url TEXT
     )`;
 
     await sql`CREATE TABLE IF NOT EXISTS sa_comments (
@@ -54,6 +30,12 @@ export async function GET() {
         user_id UUID REFERENCES sa_users(user_id),
         content TEXT,
         created_at TIMESTAMP DEFAULT now()
+    )`;
+
+    await sql`CREATE TABLE IF NOT EXISTS sa_likes (
+        user_id UUID REFERENCES sa_users(user_id),
+        post_id UUID REFERENCES sa_posts(post_id),
+        PRIMARY KEY (user_id, post_id)
     )`;
 
     await sql`CREATE TABLE IF NOT EXISTS sa_comment_likes (

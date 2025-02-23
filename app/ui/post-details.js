@@ -57,7 +57,7 @@ export default ({
                                 <span className="font-semibold mr-2 text-gray-800 dark:text-gray-200">{comment.username || 'Usuario'}</span>
                                 <span className="text-gray-600 dark:text-gray-400">{comment.content}</span>
                             </p>
-                            <CommentLikeButton comment_id={comment.comment_id} user_id={user_id} isLikedInitial={false} />
+                            <CommentLikeButton comment_id={comment.comment_id} user_id={user_id} isLikedInitial={comment.isLiked || false} />
                         </div>
                     ))}
                 </div>

@@ -46,10 +46,18 @@ export async function removeLike(post_id, user_id){
 }
 
 export async function insertCommentLike(comment_id, user_id) {
-    await sql`INSERT INTO sa_comment_likes(comment_id, user_id) VALUES (
-        ${comment_id},
-        ${user_id}
-    )`
+    const existingLike = await sql`
+        SELECT comment_id 
+        FROM sa_comment_likes 
+        WHERE comment_id = ${comment_id} AND user_id = ${user_id}
+    `;
+
+    if (existingLike.rows.length === 0) {
+        await sql`INSERT INTO sa_comment_likes(comment_id, user_id) VALUES (
+            ${comment_id},
+            ${user_id}
+        )`;
+    }
 }
 
 export async function removeCommentLike(comment_id, user_id) {
