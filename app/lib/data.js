@@ -67,12 +67,21 @@ export async function getComments(post_id) {
         sa_users.username, 
         sa_users.picture,
         sa_comments.created_at,
-        CASE WHEN sa_comment_likes.comment_id IS NOT NULL THEN true ELSE false END as isLiked
+        CASE WHEN sa_comment_likes.comment_id IS NOT NULL THEN true ELSE false END as isLiked,
+        COUNT(DISTINCT cl.user_id) as num_likes
       FROM 
         sa_comments
         JOIN sa_users ON sa_comments.user_id = sa_users.user_id
         LEFT JOIN sa_comment_likes ON sa_comments.comment_id = sa_comment_likes.comment_id
+        LEFT JOIN sa_comment_likes cl ON sa_comments.comment_id = cl.comment_id
       WHERE sa_comments.post_id = ${post_id}
+      GROUP BY 
+        sa_comments.comment_id,
+        sa_comments.content,
+        sa_users.username,
+        sa_users.picture,
+        sa_comments.created_at,
+        sa_comment_likes.comment_id
       ORDER BY sa_comments.created_at
     `).rows;
   }
