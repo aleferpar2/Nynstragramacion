@@ -11,11 +11,13 @@ export default async ({params}) => {
     const comments = await getComments(post_id);
 
     return (
-        <PostDetails
-            user_id={user_id} 
-            post={post}
-            isLikedInitial={like.length > 0} 
-            comments={comments}
-        />
+        <div className="flex flex-col grow items-center gap-16">
+            <PostDetails
+                user_id={user_id} 
+                post={post}
+                isLikedInitial={like.length > 0} 
+                comments={comments}
+            />
+        </div>
     )
 }

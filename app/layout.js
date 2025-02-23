@@ -36,10 +36,12 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased flex`}>
-        <NavBar></NavBar>
-        <div className="p-8 grow flex justify-center align-center">
-          {children}
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased flex min-h-screen`}>
+        <NavBar />
+        <div className="flex-1 p-4 sm:p-8 sm:pl-12 sm:ml-64 mt-20 sm:mt-4 overflow-x-hidden">
+          <div className="max-w-screen-xl mx-auto">
+            {children}
+          </div>
         </div>
       </body>
     </html>

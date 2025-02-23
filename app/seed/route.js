@@ -2,10 +2,10 @@ import { sql } from "@vercel/postgres"
 
 export async function GET() {
     await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`
-    await sql`DROP TABLE IF EXISTS sa_LIKES`
-    await sql`DROP TABLE IF EXISTS sa_COMMENTS`
-    await sql`DROP TABLE IF EXISTS sa_POSTS`
-    await sql`DROP TABLE IF EXISTS sa_USERS`
+    await sql`DROP TABLE IF EXISTS sa_likes CASCADE`
+    await sql`DROP TABLE IF EXISTS sa_comments CASCADE`
+    await sql`DROP TABLE IF EXISTS sa_posts CASCADE`
+    await sql`DROP TABLE IF EXISTS sa_users CASCADE`
     
     
     await sql`CREATE TABLE IF NOT EXISTS sa_users(
