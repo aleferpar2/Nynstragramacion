@@ -2,10 +2,11 @@ import { sql } from "@vercel/postgres"
 
 export async function GET() {
     await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`
+    await sql`DROP TABLE IF EXISTS sa_comment_likes CASCADE`
     await sql`DROP TABLE IF EXISTS sa_likes CASCADE`
     await sql`DROP TABLE IF EXISTS sa_comments CASCADE`
     await sql`DROP TABLE IF EXISTS sa_posts CASCADE`
-    await sql`DROP TABLE IF EXISTS sa_users CASCADE`
+    //await sql`DROP TABLE IF EXISTS sa_users CASCADE`
     
     
     await sql`CREATE TABLE IF NOT EXISTS sa_users(
@@ -15,6 +16,12 @@ export async function GET() {
         picture text,
         email text UNIQUE
     )`;
+
+    await sql`CREATE TABLE IF NOT EXISTS sa_comment_likes (
+        user_id UUID REFERENCES sa_users(user_id),
+        comment_id UUID REFERENCES sa_comments(comment_id),
+        PRIMARY KEY (user_id, comment_id)
+    )`;
     
     await sql`CREATE TABLE IF NOT EXISTS sa_posts(
     post_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -23,10 +30,22 @@ export async function GET() {
     url TEXT
     )`;
 
+    await sql`CREATE TABLE IF NOT EXISTS sa_comment_likes (
+        user_id UUID REFERENCES sa_users(user_id),
+        comment_id UUID REFERENCES sa_comments(comment_id),
+        PRIMARY KEY (user_id, comment_id)
+    )`;
+
     await sql`CREATE TABLE IF NOT EXISTS sa_likes (
         user_id UUID REFERENCES sa_users(user_id),
         post_id UUID REFERENCES sa_posts(post_id),
         PRIMARY KEY (user_id, post_id)
+    )`;
+
+    await sql`CREATE TABLE IF NOT EXISTS sa_comment_likes (
+        user_id UUID REFERENCES sa_users(user_id),
+        comment_id UUID REFERENCES sa_comments(comment_id),
+        PRIMARY KEY (user_id, comment_id)
     )`;
 
     await sql`CREATE TABLE IF NOT EXISTS sa_comments (
@@ -35,6 +54,12 @@ export async function GET() {
         user_id UUID REFERENCES sa_users(user_id),
         content TEXT,
         created_at TIMESTAMP DEFAULT now()
+    )`;
+
+    await sql`CREATE TABLE IF NOT EXISTS sa_comment_likes (
+        user_id UUID REFERENCES sa_users(user_id),
+        comment_id UUID REFERENCES sa_comments(comment_id),
+        PRIMARY KEY (user_id, comment_id)
     )`;
 
     return Response.json({"message": "Database seed the guay"});

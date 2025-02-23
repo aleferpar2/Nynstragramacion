@@ -45,12 +45,20 @@ export async function removeLike(post_id, user_id){
     `
 }
 
+export async function insertCommentLike(comment_id, user_id) {
+    await sql`INSERT INTO sa_comment_likes(comment_id, user_id) VALUES (
+        ${comment_id},
+        ${user_id}
+    )`
+}
 
+export async function removeCommentLike(comment_id, user_id) {
+    await sql`DELETE FROM sa_comment_likes 
+        WHERE comment_id = ${comment_id} AND user_id = ${user_id}
+    `
+}
 
-
-  
-
-  export async function addComment(formData) {
+export async function addComment(formData) {
     const user_id = (await auth0.getSession()).user.user_id;
     const content = formData.get('content');
     const post_id = formData.get('post_id');

@@ -2,6 +2,7 @@ import { ChatBubbleLeftIcon, HeartIcon } from "@heroicons/react/24/solid"
 import Image from "next/image"
 import Link from "next/link"
 import LikeButton from "./like-button"
+import CommentLikeButton from "./comment-like-button"
 import { addComment } from "../lib/actions"
 
 export default ({
@@ -51,10 +52,13 @@ export default ({
 
                 <div className="space-y-3 pt-3 border-t border-gray-200 dark:border-neutral-800">
                     {comments.map((comment) => (
-                        <p key={comment.comment_id} className="text-sm">
-                            <span className="font-semibold mr-2 text-gray-800 dark:text-gray-200">{comment.username || 'Usuario'}</span>
-                            <span className="text-gray-600 dark:text-gray-400">{comment.content}</span>
-                        </p>
+                        <div key={comment.comment_id} className="flex items-center gap-2">
+                            <p className="text-sm flex-grow">
+                                <span className="font-semibold mr-2 text-gray-800 dark:text-gray-200">{comment.username || 'Usuario'}</span>
+                                <span className="text-gray-600 dark:text-gray-400">{comment.content}</span>
+                            </p>
+                            <CommentLikeButton comment_id={comment.comment_id} user_id={user_id} isLikedInitial={false} />
+                        </div>
                     ))}
                 </div>
 

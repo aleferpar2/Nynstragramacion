@@ -91,6 +91,22 @@ export async function getLike(user_id, post_id){
     `).rows;
 }
 
+export async function getCommentLike(user_id, comment_id) {
+    return (await sql`
+        SELECT comment_id 
+        FROM sa_comment_likes
+        WHERE user_id = ${user_id} AND comment_id = ${comment_id}
+    `).rows;
+}
+
+export async function getCommentLikes(user_id) {
+    return (await sql`
+        SELECT comment_id 
+        FROM sa_comment_likes 
+        WHERE user_id = ${user_id}
+    `).rows;
+}
+
 export async function getPostsBorrar() {
     return (await sql`
       SELECT 
