@@ -139,3 +139,36 @@ export async function getPostsBorrar() {
         sa_users.picture
     `).rows;
   }
+
+export async function searchPosts(query) {
+    if (!query) return [];
+    
+    return (await sql`
+        SELECT 
+            sa_posts.post_id, 
+            content, 
+            url, 
+            sa_posts.user_id, 
+            username, 
+            picture,
+            count(sa_likes.user_id) as num_likes 
+        FROM 
+            sa_posts 
+        JOIN
+            sa_users ON sa_posts.user_id = sa_users.user_id
+        LEFT JOIN 
+            sa_likes ON sa_posts.post_id = sa_likes.post_id
+        WHERE 
+            LOWER(content) LIKE ${`%${query.toLowerCase()}%`} OR
+            LOWER(username) LIKE ${`%${query.toLowerCase()}%`}
+        GROUP BY 
+            sa_posts.post_id, 
+            content, 
+            url, 
+            sa_posts.user_id, 
+            username,
+            picture
+        ORDER BY
+            sa_posts.post_id DESC
+    `).rows;
+}

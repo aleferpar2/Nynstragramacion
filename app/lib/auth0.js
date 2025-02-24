@@ -1,25 +1,19 @@
 import { Auth0Client } from "@auth0/nextjs-auth0/server"
 import { sql } from '@vercel/postgres';
 
-export const uid = async () => {
-  const session = await auth0.getSession();
-  return session?.user?.user_id || null;
-};
-
 export const auth0 = new Auth0Client({
     async beforeSessionSaved(session, idToken) {
-      
-      if (!session || !session.user) {
-        console.error("La sesión o el usuario no están definidos.");
-        return session;
-      }
+        if (!session?.user) {
+            console.error("Session or user is not defined");
+            return session;
+        }
         
-      const { nickname, name, picture, email } = session.user;
-      
-      if (!email) {
-        console.error("El usuario no tiene un email asociado.");
-        return session;
-      }
+        const { nickname, name, picture, email } = session.user;
+        
+        if (!email) {
+            console.error("User has no associated email");
+            return session;
+        }
         try {
           console.log(
             `INSERT INTO sa_users(username,name,picture,email) 
