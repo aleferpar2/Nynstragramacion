@@ -1,5 +1,5 @@
 export default () =>{
     return (
-        <p>Aqui van tus comments...</p>
+        <p></p>
     )
 }
