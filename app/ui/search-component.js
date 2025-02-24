@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import PostList from '@/app/ui/post-list'
+import { searchPosts } from '@/app/lib/data'
 
 export default function SearchComponent({ user_id }) {
     const [searchTerm, setSearchTerm] = useState('')
@@ -12,9 +13,8 @@ export default function SearchComponent({ user_id }) {
         setSearchTerm(term)
 
         if (term.length >= 2) {
-            const response = await fetch(`/api/search?q=${encodeURIComponent(term)}`)
-            const data = await response.json()
-            setSearchResults(data)
+            const results = await searchPosts(term)
+            setSearchResults(results)
         } else {
             setSearchResults([])
         }
